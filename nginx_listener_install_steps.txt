@@ -1,0 +1,25 @@
+# Attach the OpenShift Business Partner Supported NFR pool
+subscription-manager attach --pool 8a85f987445e2238014494268d8c2ed2
+
+# Add the subscription for scl 1.2 beta
+subscription-manager repos --enable rhel-server-rhscl-6-beta-rpms
+
+# Add the subscription for OSE Node
+subscription-manager repos --enable rhel-6-server-ose-2.1-node-rpms
+
+#Install nginx-routing rpm
+yum install ./oo-nginx-routing-0.1-1.noarch.rpm
+
+# Modify the ActiveMQ credentials and host in the nginx routing listener. The
+# intent here is to run this routing listener on each nginx proxy. Also modify
+# the nginx reload command to be `service nginx16-nginx reload`. Also modify
+# the domain name for applications to reflect the actual domain for apps, as
+# an example: (server_name ha-#{scope}.us.platform.dell.com;). This file is
+# located under /usr/sbin/oo-nginx-routing.rb.
+
+# Start the oo-nginx-routing service
+service oo-nginx-routing start
+
+# Set service to start on reboot
+chkconfig --add oo-nginx-routing
+ckconfig oo-nginx-routing on
