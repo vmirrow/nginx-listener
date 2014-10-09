@@ -56,10 +56,10 @@ def add_haproxy(appname, namespace, ip, port)
       }
     }
     server {
-      listen 8443;
+      listen 8443 ssl;
       server_name ha-#{scope}.us.platform.dell.com;
       location / {
-        proxy_pass https://#{scope};
+        proxy_pass http://#{scope};
       }
     }
 EOF
